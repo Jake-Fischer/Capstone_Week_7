@@ -4,7 +4,6 @@ import logging
 
 
 key = os.environ.get('WEATHER_KEY')
-
 url = f'http://api.openweathermap.org/data/2.5/forecast'
 
 
@@ -13,7 +12,8 @@ def main():
     weather_data, error = get_current_weather(location,key)
     if error:
         print('Sorry, could not get the weather.')
-        logging.error('An error has occired getting the weather data.')
+        logging.error(url)
+        logging.error(error)
     else:
         five_day_weather_forecast = get_data(weather_data)
         for forecast in five_day_weather_forecast:
@@ -43,10 +43,11 @@ def get_current_weather(location, key):
         response = requests.get(url, params=query_params)
         response.raise_for_status() # Raises an exception for 400 or 500 errors
         data = response.json()
+        # logging.info(data)
         return data, None
     except Exception as e:
         logging.error(e)
-        logging.info(response.text)
+        logging.error(response.text)
         return None, e
 
 
